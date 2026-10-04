@@ -31,7 +31,7 @@
 set(LIBS common;blocks;cryptonote_basic;cryptonote_core;multisig;
 		cryptonote_protocol;daemonizer;mnemonics;epee;lmdb;device;wallet-crypto;
 		blockchain_db;ringct;wallet;cncrypto;easylogging;version;
-        checkpoints;randomx;hardforks;miniupnpc)
+        checkpoints;randomx;hardforks)
 
 set(Xmr_INCLUDE_DIRS "${CPP_MONERO_DIR}")
 

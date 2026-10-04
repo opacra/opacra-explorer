@@ -10,7 +10,7 @@
     <h3>Data file prefix: {{data_prefix}}</h3>
 
     {{#has_error}}
-        <h4 style="color:red">Attempt failed</h4>
+        <h4 style="color: var(--warn)">Attempt failed</h4>
         <h4>{{error_msg}}</h4>
     {{/has_error}}
     {{^has_error}}
@@ -33,7 +33,7 @@
                             <td>{{key_image}}</td>
                             <td>
                                 {{#is_spent}}
-                                    <span style="color: #008009;font-weight: bold">{{is_spent}}</span>
+                                    <span style="color: var(--ok);font-weight: bold">{{is_spent}}</span>
                                 {{/is_spent}}
                                 {{^is_spent}}
                                     {{is_spent}}

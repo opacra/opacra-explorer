@@ -31,10 +31,10 @@
             | <a href="{{mainnet_url}}">Go to mainnet explorer</a>
          {{/mainnet_url}}
          {{#testnet}}
-            | This is <span style="color:#ff6b62">testnet</span> blockchain
+            | This is the <span class="warn">testnet</span>: coins have no value
          {{/testnet}}
          {{#stagenet}}
-            | This is <span style="color:#ff6b62">stagenet</span> blockchain
+            | This is the <span class="warn">stagenet</span>: coins have no value
          {{/stagenet}}
 
         </h3>
@@ -55,9 +55,17 @@
 
     {{#emission}}
         <h3 style="font-size: 12px; margin-top: 2px">
-            Monero emission (fees) is {{amount}} ({{fee_amount}}) as of {{blk_no}} block
+            Opacra emission (fees) is {{amount}} ({{fee_amount}}) as of block {{blk_no}}
         </h3>
     {{/emission}}
+
+    <div class="fund">
+        <p class="fund-lead">Development fund: 5% of the new coins in every block go to the address below.
+            The view key is public, so anyone can check every payment. Open a block's miner
+            (coinbase) transaction and choose <i>Development fund</i> to see it.</p>
+        <p class="fund-key"><span>Address</span> <span class="mono">{{dev_fund_address}}</span></p>
+        <p class="fund-key"><span>Public view key</span> <span class="mono">{{dev_fund_viewkey}}</span></p>
+    </div>
 
 
 </div>

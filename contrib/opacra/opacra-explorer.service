@@ -1,0 +1,30 @@
+# systemd unit for the Opacra block explorer (testnet)
+[Unit]
+Description=Opacra block explorer
+After=opacrad.service network-online.target
+Wants=opacrad.service
+
+[Service]
+# Same user as the node: LMDB needs write access to its lock file even when
+# the explorer only reads the chain.
+User=opacra
+Group=opacra
+Type=simple
+WorkingDirectory=/opt/opacra-explorer
+ExecStart=/opt/opacra-explorer/xmrblocks --testnet \
+    --bc-path /var/lib/opacra/testnet/lmdb \
+    --daemon-url 127.0.0.1:29971 \
+    --bindaddr 127.0.0.1 --port 8081 \
+    --enable-json-api --no-blocks-on-index 25
+Restart=always
+RestartSec=10
+# hardening
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/var/lib/opacra/testnet/lmdb
+MemoryMax=2G
+
+[Install]
+WantedBy=multi-user.target

@@ -650,7 +650,9 @@ index2(uint64_t page_no = 0, bool refresh_page = false)
             {"enable_pusher"            , enable_pusher},
             {"enable_key_image_checker" , enable_key_image_checker},
             {"enable_output_key_checker", enable_output_key_checker},
-            {"enable_autorefresh_option", enable_autorefresh_option}
+            {"enable_autorefresh_option", enable_autorefresh_option},
+            {"dev_fund_address"         , dev_fund_address()},
+            {"dev_fund_viewkey"         , dev_fund_viewkey()}
     };
 
     context.emplace("txs", mstch::array()); // will keep tx to show
@@ -1946,7 +1948,7 @@ show_my_outputs(string tx_hash_str,
 
     if (xmr_address_str.empty())
     {
-        return string("Monero address not provided!");
+        return string("Opacra address not provided!");
     }
 
     if (viewkey_str.empty())
@@ -2209,6 +2211,23 @@ show_my_outputs(string tx_hash_str,
         }
     }
 
+    // Opacra: a coinbase carries a second tx public key (the development
+    // fund's per-height key R_f); the fund's output is found with it.
+    key_derivation second_derivation;
+    bool have_second_derivation = false;
+
+    if (!tx_prove && is_coinbase(tx))
+    {
+        public_key second_pk = cryptonote::get_tx_pub_key_from_extra(tx, 1);
+
+        if (second_pk != crypto::null_pkey
+                && generate_key_derivation(second_pk, prv_view_key,
+                                           second_derivation))
+        {
+            have_second_derivation = true;
+        }
+    }
+
     // decrypt encrypted payment id, as used in integreated addresses
     crypto::hash8 decrypted_payment_id8 = txd.payment_id8;
 
@@ -2269,6 +2288,16 @@ show_my_outputs(string tx_hash_str,
             mine_output = (std::get<0>(outp) == tx_pubkey);
 
             with_additional = true;
+        }
+
+        if (!mine_output && have_second_derivation)
+        {
+            derive_public_key(second_derivation,
+                              output_idx,
+                              address_info.address.m_spend_public_key,
+                              tx_pubkey);
+
+            mine_output = (std::get<0>(outp) == tx_pubkey);
         }
 
         uint64_t xmr_amount = std::get<1>(outp);
@@ -5469,7 +5498,7 @@ json_outputs(string tx_hash_str,
     if (address_str.empty())
     {
         j_response["status"]  = "error";
-        j_response["message"] = "Monero address not provided";
+        j_response["message"] = "Opacra address not provided";
         return j_response;
     }
 
@@ -5568,6 +5597,23 @@ json_outputs(string tx_hash_str,
         }
     }
 
+    // Opacra: a coinbase carries a second tx public key (the development
+    // fund's per-height key R_f); the fund's output is found with it.
+    key_derivation second_derivation;
+    bool have_second_derivation = false;
+
+    if (!tx_prove && is_coinbase(tx))
+    {
+        public_key second_pk = cryptonote::get_tx_pub_key_from_extra(tx, 1);
+
+        if (second_pk != crypto::null_pkey
+                && generate_key_derivation(second_pk, prv_view_key,
+                                           second_derivation))
+        {
+            have_second_derivation = true;
+        }
+    }
+
     uint64_t output_idx {0};
 
     std::vector<uint64_t> money_transfered(tx.vout.size(), 0);
@@ -5599,6 +5645,16 @@ json_outputs(string tx_hash_str,
                               tx_pubkey);
             mine_output = (std::get<0>(outp) == tx_pubkey);
             with_additional = true;
+        }
+
+        if (!mine_output && have_second_derivation)
+        {
+            derive_public_key(second_derivation,
+                              output_idx,
+                              address_info.address.m_spend_public_key,
+                              tx_pubkey);
+
+            mine_output = (std::get<0>(outp) == tx_pubkey);
         }
 
         uint64_t xmr_amount  = std::get<1>(outp);
@@ -5741,7 +5797,7 @@ json_outputsblocks(string startblock,
     if (address_str.empty())
     {
         j_response["status"]  = "error";
-        j_response["message"] = "Monero address not provided";
+        j_response["message"] = "Opacra address not provided";
         return j_response;
     }
 
@@ -6330,6 +6386,24 @@ mark_real_mixins_on_timescales(
     }
 }
 
+// Opacra: the development fund's published address and view key for this network,
+// so anyone can check the fund's 5% in any block from the explorer.
+string
+dev_fund_address() const
+{
+    return testnet ? ::config::testnet::DEV_FUND_ADDRESS
+         : stagenet ? ::config::stagenet::DEV_FUND_ADDRESS
+         : ::config::DEV_FUND_ADDRESS;
+}
+
+string
+dev_fund_viewkey() const
+{
+    return testnet ? ::config::testnet::DEV_FUND_VIEW_KEY
+         : stagenet ? ::config::stagenet::DEV_FUND_VIEW_KEY
+         : ::config::DEV_FUND_VIEW_KEY;
+}
+
 mstch::map
 construct_tx_context(transaction tx, uint16_t with_ring_signatures = 0)
 {
@@ -6393,6 +6467,9 @@ construct_tx_context(transaction tx, uint16_t with_ring_signatures = 0)
     mstch::map context {
             {"testnet"               , testnet},
             {"stagenet"              , stagenet},
+            {"is_coinbase_tx"        , cryptonote::is_coinbase(tx)},
+            {"dev_fund_address"      , dev_fund_address()},
+            {"dev_fund_viewkey"      , dev_fund_viewkey()},
             {"tx_hash"               , tx_hash_str},
             {"tx_prefix_hash"        , string{}},
             {"tx_pub_key"            , pod_to_hex(txd.pk)},

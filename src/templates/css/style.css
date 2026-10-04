@@ -1,55 +1,116 @@
+/* Opacra explorer. Same tokens as opacra.org; system fonts only, so the page
+   loads nothing from third parties. */
+:root {
+    --bg: #ebe8f1;
+    --bg-2: #e2deea;
+    --ink: #1b1525;
+    --muted: #5d5470;
+    --faint: #8c84a0;
+    --bar: #c5bfd3;
+    --accent: #5a43c7;
+    --accent-ink: #ffffff;
+    --warn: #b0392f;
+    --ok: #1f7a5c;
+    --sans: ui-sans-serif, -apple-system, "Segoe UI Variable Text", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    --mono: ui-monospace, "Cascadia Mono", Menlo, Consolas, monospace;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --bg: #110e18;
+        --bg-2: #18141f;
+        --ink: #eeeaf6;
+        --muted: #a59db8;
+        --faint: #6d6582;
+        --bar: #3a3348;
+        --accent: #b9a8ff;
+        --accent-ink: #160f2e;
+        --warn: #ff8f86;
+        --ok: #8ee3c3;
+    }
+}
+
 body {
     margin: 0;
-    padding: 0;
-    color: white;
-    background-color: black;
+    padding: 0 0 32px;
+    color: var(--ink);
+    background-color: var(--bg);
+    font-family: var(--sans);
+    line-height: 1.45;
 }
 
 h1, h2, h3, h4, h5, h6 {
     text-align: center;
+    font-weight: 600;
 }
+
+h2 { font-size: 20px; letter-spacing: -0.01em; margin-top: 28px; }
+h3 { font-size: 15px; }
+h4, h5, h6 { color: var(--muted); font-weight: 500; }
+
+h1.brand {
+    font-size: 26px;
+    letter-spacing: -0.02em;
+    margin: 28px 0 6px;
+}
+
+h1.brand a:link, h1.brand a:visited { color: var(--ink); }
+
+.net, .warn { color: var(--warn); }
+
+.net {
+    font-size: 14px;
+    font-weight: 600;
+    border: 1px solid var(--warn);
+    border-radius: 4px;
+    padding: 1px 6px;
+    vertical-align: middle;
+}
+
+.mono { font-family: var(--mono); word-break: break-all; }
 
 .center {
     margin: auto;
     width: 96%;
-    /*border: 1px solid #73AD21;
-    padding: 10px;*/
+    max-width: 1400px;
+}
+
+table {
+    border-collapse: collapse;
+    max-width: 100%;
 }
 
 tr, li, #pages, .info {
-    font-family: "Lucida Console", Monaco, monospace;
-    font-size  : 12px;
-    height: 22px;
+    font-family: var(--mono);
+    font-size: 12px;
+    height: 24px;
 }
 
-#pages
-{
-    margin-top: 15px;
-}
+tr { border-bottom: 1px solid var(--bar); }
+tr:first-child { color: var(--muted); }
+tr:hover { background: var(--bg-2); }
+
+#pages { margin-top: 15px; }
 
 td {
     text-align: center;
     word-break: break-all;
+    padding: 2px 6px;
 }
 
-a:link {
+a:link, a:visited {
     text-decoration: none;
-    color: white;
+    color: var(--accent);
 }
 
-a:visited {
-    text-decoration: none;
-    color: white;
-}
-
-a:hover {
+a:hover, a:active {
     text-decoration: underline;
-    color: white;
+    color: var(--accent);
 }
 
-a:active {
-    text-decoration: none;
-    color: white;
+a:focus-visible, input:focus-visible, label:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
 }
 
 form {
@@ -57,92 +118,128 @@ form {
     text-align: center;
 }
 
-.style-1 input[type="text"] {
-    padding: 2px;
-    border: solid 1px #dcdcdc;
-    transition: box-shadow 0.3s, border 0.3s;
+input[type="text"] {
+    max-width: 92%;
 }
+
+.style-1 input[type="text"] {
+    padding: 6px 8px;
+    color: var(--ink);
+    background: var(--bg-2);
+    border: 1px solid var(--bar);
+    border-radius: 6px;
+    font-family: var(--mono);
+    font-size: 12px;
+}
+
 .style-1 input[type="text"]:focus,
 .style-1 input[type="text"].focus {
-    border: solid 1px #707070;
-    box-shadow: 0 0 5px 1px #969696;
+    border-color: var(--accent);
+    outline: none;
 }
 
+input[type="submit"] {
+    padding: 6px 14px;
+    color: var(--accent-ink);
+    background: var(--accent);
+    border: 0;
+    border-radius: 6px;
+    font-family: var(--sans);
+    font-weight: 600;
+    cursor: pointer;
+}
 
+/* Development fund summary on the home page */
+.fund {
+    margin: 18px auto 6px;
+    max-width: 760px;
+    padding: 12px 16px;
+    border: 1px solid var(--bar);
+    border-left: 3px solid var(--accent);
+    border-radius: 6px;
+    background: var(--bg-2);
+    text-align: left;
+    font-size: 13px;
+}
+
+.fund p { margin: 4px 0; }
+.fund-lead { color: var(--ink); }
+.fund-key span:first-child { color: var(--muted); display: inline-block; min-width: 110px; }
+.fund-key .mono { font-size: 11px; }
+
+/* Tabs on the transaction page (CSS only, no JavaScript) */
 .tabs {
     position: relative;
-    min-height: 240px; 
+    min-height: 260px;
     clear: both;
     margin: 25px 0;
 }
 
-.tab {
-    float: left;
-}
+.tab { float: left; }
 
 .tab label {
-    background: black;
+    background: var(--bg);
     padding: 10px;
-    border: 1px solid #ccc;
+    border: 1px solid var(--bar);
     margin-left: -1px;
     position: relative;
     left: 1px;
+    cursor: pointer;
 }
 
-.tab [type=radio] {
-    display: none;
-}
+.tab [type=radio] { display: none; }
 
 .content {
     position: absolute;
     top: 28px;
     left: 0;
-    background: black;
     right: 0;
     bottom: 0;
+    background: var(--bg);
     padding: 20px;
-    border: 1px solid #ccc;
+    border: 1px solid var(--bar);
     display: none;
+    overflow: auto;
 }
 
 [type=radio]:checked ~ label {
-    background: #505050 ;
-    border-bottom: 1px solid white;
+    background: var(--bg-2);
+    border-bottom: 1px solid var(--bg-2);
+    color: var(--accent);
     z-index: 2;
 }
 
-[type=radio]:checked ~ label ~ .content {
-    z-index: 1;
-}
+[type=radio]:checked ~ label ~ .content { z-index: 1; }
 
 #tab-1:checked ~ .content.tab-1,
-#tab-2:checked ~ .content.tab-2 {
+#tab-2:checked ~ .content.tab-2,
+#tab-3:checked ~ .content.tab-3 {
     display: block;
 }
 
 input#toggle-1[type=checkbox] {
     position: absolute;
-    /*top: -9999px;*/
     left: -9999px;
-
 }
+
 label#show-decoded-inputs {
-    /*-webkit-appearance: push-button;*/
-    /*-moz-appearance: button;*/
     display: inline-block;
-    /*margin: 60px 0 10px 0;*/
     cursor: pointer;
-    background-color: black;;
-    color: white;
+    background-color: var(--bg);
+    color: var(--accent);
     width: 100%;
     text-align: center;
 }
 
-div#decoded-inputs{
-    display: none;
-}
+div#decoded-inputs { display: none; }
 
-/* Toggled State */
-input#toggle-1[type=checkbox]:checked ~ div#decoded-inputs {
-    display: block;
+input#toggle-1[type=checkbox]:checked ~ div#decoded-inputs { display: block; }
+
+@media (max-width: 700px) {
+    tr, li, #pages, .info { font-size: 11px; }
+    /* wide tables scroll sideways instead of breaking every cell */
+    table { display: block; overflow-x: auto; width: 100% !important; }
+    td { white-space: nowrap; word-break: normal; }
+    .tabs { min-height: 380px; }
+    .fund-key span:first-child { display: block; }
 }

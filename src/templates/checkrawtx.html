@@ -8,7 +8,7 @@
     <div class="center">
 
         {{#has_error}}
-            <h4 style="color:red">Checking tx failed</h4>
+            <h4 style="color: var(--warn)">Checking tx failed</h4>
             <h4>{{error_msg}}</h4>
         {{/has_error}}
         {{^has_error}}
@@ -63,7 +63,7 @@
                                             <td>{{out_index}}</td>
                                             <td><a href="/tx/{{tx_hash}}">{{out_pub_key}}</a></td>
                                             {{#is_real}}
-                                                <td><span style="color: #008009;font-weight: bold">{{is_real}}</span></td>
+                                                <td><span style="color: var(--ok);font-weight: bold">{{is_real}}</span></td>
                                             {{/is_real}}
                                             {{^is_real}}
                                                 <td>{{is_real}}</td>

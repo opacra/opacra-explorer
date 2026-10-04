@@ -8,14 +8,14 @@
     <h3>Data file prefix: {{data_prefix}}</h3>
 
     {{#has_error}}
-        <h4 style="color:red">Attempt failed</h4>
+        <h4 style="color: var(--warn)">Attempt failed</h4>
         <h4>{{error_msg}}</h4>
     {{/has_error}}
     {{^has_error}}
         <h4>Output keys for address: {{address}}</h4>
         <h4>Viewkey: {{viewkey}}</h4>
         {{#has_total_xmr}}
-            <h4>Total xmr: {{total_xmr}}</h4>
+            <h4>Total OPCA: {{total_xmr}}</h4>
         {{/has_total_xmr}}
 
         <div class="center">
@@ -41,7 +41,7 @@
                             <td>{{is_ringct}}</td>
                             {{#are_key_images_known}}
                                 <td>{{^is_spent}}
-                                        <span style="color: #008009;font-weight: bold">{{is_spent}}</span>
+                                        <span style="color: var(--ok);font-weight: bold">{{is_spent}}</span>
                                     {{/is_spent}}
                                     {{#is_spent}}
                                         {{is_spent}}

@@ -1142,22 +1142,11 @@ get_tx_pub_key_from_received_outs(const transaction &tx)
 
     public_key tx_pub_key = pub_key_field.pub_key;
 
-    bool two_found = find_tx_extra_field_by_type(tx_extra_fields, pub_key_field, 1);
-
-    if (!two_found)
-    {
-        // easy case, just one found
-        return tx_pub_key;
-    }
-    else
-    {
-        // just return second one if there are two.
-        // this does not require private view key, as
-        // its not needed for my use case.
-        return pub_key_field.pub_key;
-    }
-
-    return null_pkey;
+    // Opacra: always the first key. Every Opacra coinbase carries a second
+    // public key (the development fund's per-height key R_f), and the chain
+    // has no legacy duplicate-key transactions, so the first key is the
+    // transaction's own. The fund's key is handled where outputs are decoded.
+    return tx_pub_key;
 }
 
 /**

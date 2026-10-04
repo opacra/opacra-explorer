@@ -56,7 +56,7 @@
                 <td>{{amount}}</td>
                 {{#mine_output}}
                 <td>
-                        <span style="color: #008009;font-weight: bold">
+                        <span style="color: var(--ok);font-weight: bold">
                         {{mine_output}}
                         </span>
                 </td>
@@ -69,7 +69,7 @@
         </table>
 
         <h3>
-            Sum XMR from matched outputs (i.e., incoming XMR):
+            Sum of OPCA in matched outputs (incoming OPCA):
             {{#found_our_outputs}}
                 {{sum_xmr}}
             {{/found_our_outputs}}
@@ -121,7 +121,7 @@
                                                     <td>{{amount}}</td>
                                                     <td>
                                                         {{#mine_output}}
-                                                            <span style="color: #008009;font-weight: bold">{{mine_output}}</span>{{#out_in_match}}*{{/out_in_match}}
+                                                            <span style="color: var(--ok);font-weight: bold">{{mine_output}}</span>{{#out_in_match}}*{{/out_in_match}}
                                                         {{/mine_output}}
                                                         {{^mine_output}}
                                                             {{mine_output}}
@@ -142,7 +142,7 @@
 
         </div>
         <h3>
-            Sum XMR from matched and marked by * ring member's outputs: {{sum_mixin_xmr}}
+            Sum of OPCA in matched ring members marked by *: {{sum_mixin_xmr}}
             <br/>
             <span style="font-size: 16px"> Possible spending is:
                 {{possible_spending}} (tx fee included)
@@ -155,7 +155,7 @@
                <br/>
                <span style="font-size: 14px">
                  Number of possible our mixins is {{no_all_possible_mixins}}
-                      for {{all_possible_mixins_amount}} xmr
+                      for {{all_possible_mixins_amount}} OPCA
                       (amount as uint64).
                </span>
         </h3>
