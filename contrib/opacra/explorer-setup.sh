@@ -36,7 +36,11 @@ cp "$HERE/opacra-explorer.service" /etc/systemd/system/opacra-explorer.service
 systemctl daemon-reload
 systemctl enable opacra-explorer >/dev/null
 systemctl restart opacra-explorer
-sleep 3
+# it reads the chain and asks the node for network info before it starts listening
+for i in $(seq 1 30); do
+  curl -fsS -o /dev/null http://127.0.0.1:8081/ 2>/dev/null && break
+  sleep 2
+done
 if ! curl -fsS -o /dev/null http://127.0.0.1:8081/; then
   echo "Explorer did not answer on 127.0.0.1:8081. Check: journalctl -u opacra-explorer -n 50" >&2
   exit 1
