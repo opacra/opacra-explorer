@@ -22,7 +22,7 @@ id opacra >/dev/null 2>&1 || { echo "User 'opacra' not found: install the seed n
 echo "== packages"
 export DEBIAN_FRONTEND=noninteractive
 apt-get update -qq
-apt-get install -y -qq nginx certbot python3-certbot-nginx libunwind8 libevent-2.1-7t64 dnsutils
+apt-get install -y -qq nginx certbot python3-certbot-nginx libatomic1 libunwind8 libevent-2.1-7t64 libhidapi-libusb0 libusb-1.0-0 dnsutils
 
 echo "== explorer files"
 mkdir -p /opt/opacra-explorer
