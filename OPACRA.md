@@ -25,7 +25,7 @@ Build Opacra first (`build/portable`), then:
 mkdir build && cd build
 cmake -DMONERO_DIR=/path/to/opacra -DMONERO_BUILD_DIR=/path/to/opacra/build/portable -DCMAKE_BUILD_TYPE=Release ..
 make -j2
-./xmrblocks --testnet -b ~/.opacra/testnet/lmdb -d 127.0.0.1:29971
+./xmrblocks --testnet -b ~/.opacra/testnet2/lmdb -d 127.0.0.1:29971
 ```
 
 `xmrblocks` reads its pages from `./templates`, so run it from the build folder (or the install folder).

@@ -17,7 +17,7 @@ HERE="$(cd "$(dirname "$0")" && pwd)"
 [ "$(id -u)" -eq 0 ] || { echo "Run as root (sudo)." >&2; exit 1; }
 [ -f "$HERE/xmrblocks" ] || { echo "Run this from the unpacked explorer folder." >&2; exit 1; }
 id opacra >/dev/null 2>&1 || { echo "User 'opacra' not found: install the seed node first." >&2; exit 1; }
-[ -d /var/lib/opacra/testnet/lmdb ] || { echo "No testnet chain at /var/lib/opacra/testnet/lmdb." >&2; exit 1; }
+[ -d /var/lib/opacra/testnet2/lmdb ] || { echo "No testnet chain at /var/lib/opacra/testnet2/lmdb." >&2; exit 1; }
 
 echo "== packages"
 export DEBIAN_FRONTEND=noninteractive
